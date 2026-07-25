@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const systemStatusModal = document.getElementById('systemStatusModal');
   const systemStatusContent = document.getElementById('systemStatusContent');
 
+  const loginOverlay = document.getElementById('loginOverlay');
+  const ldapLoginForm = document.getElementById('ldapLoginForm');
+  const loginErrorMsg = document.getElementById('loginErrorMsg');
+  const userBadgeContainer = document.getElementById('userBadgeContainer');
+
   // Stats Counters
   const statTotalClaims = document.getElementById('statTotalClaims');
   const statReservesTotal = document.getElementById('statReservesTotal');
@@ -19,6 +24,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let totalClaimsCount = 0;
   let totalReservesSum = 0;
+
+  // LDAP Auth Session Check
+  checkAuthSession();
+
+  function checkAuthSession() {
+    const sessionStr = sessionStorage.getItem('claims_session');
+    if (sessionStr) {
+      try {
+        const user = JSON.parse(sessionStr);
+        renderUserBadge(user);
+        if (loginOverlay) loginOverlay.style.display = 'none';
+      } catch (e) {
+        showLoginOverlay();
+      }
+    } else {
+      showLoginOverlay();
+    }
+  }
+
+  function showLoginOverlay() {
+    if (loginOverlay) loginOverlay.style.display = 'flex';
+    if (userBadgeContainer) userBadgeContainer.innerHTML = '';
+  }
+
+  function renderUserBadge(user) {
+    if (!userBadgeContainer) return;
+    userBadgeContainer.innerHTML = `
+      <div class="user-badge-header">
+        <i class="fa-solid fa-user-shield" style="color: #60a5fa;"></i>
+        <span>${user.username} (${user.fullName || 'Super User'})</span>
+        <button type="button" class="btn-logout" onclick="logoutSession()">Logout</button>
+      </div>
+    `;
+  }
+
+  window.logoutSession = function() {
+    sessionStorage.removeItem('claims_session');
+    showLoginOverlay();
+  };
+
+  if (ldapLoginForm) {
+    ldapLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const domain = document.getElementById('loginDomain').value;
+      const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+      const originalText = loginSubmitBtn.innerHTML;
+
+      loginErrorMsg.style.display = 'none';
+      loginSubmitBtn.disabled = true;
+      loginSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating with LDAP Directory...`;
+
+      try {
+        const res = await fetch('/api/v1/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, domain })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.authenticated) {
+          sessionStorage.setItem('claims_session', JSON.stringify(data));
+          renderUserBadge(data);
+          loginOverlay.style.display = 'none';
+        } else {
+          loginErrorMsg.textContent = data.error || 'Authentication failed. Please verify credentials.';
+          loginErrorMsg.style.display = 'block';
+        }
+      } catch (err) {
+        console.error('LDAP authentication error:', err);
+        loginErrorMsg.textContent = 'Failed to connect to Gateway Auth Service.';
+        loginErrorMsg.style.display = 'block';
+      } finally {
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.innerHTML = originalText;
+      }
+    });
+  }
 
   // Set default datetime if empty
   const lossDateTimeInput = document.getElementById('lossDateTime');

@@ -16,7 +16,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 public class WebConfig implements WebFluxConfigurer {
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@org.springframework.lang.NonNull ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
     }

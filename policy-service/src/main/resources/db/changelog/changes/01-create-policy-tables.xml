@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="01-create-policies-table" author="insurtech">
+        <createTable tableName="policies">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_number" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="policy_holder_name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="policy_holder_email" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line_of_business" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="effective_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <createIndex indexName="idx_policies_number" tableName="policies">
+            <column name="policy_number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="02-create-policy-coverages-table" author="insurtech">
+        <createTable tableName="policy_coverages">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_coverage_policy" references="policies(id)"/>
+            </column>
+            <column name="coverage_type" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="coverage_limit" type="DECIMAL(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deductible_amount" type="DECIMAL(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

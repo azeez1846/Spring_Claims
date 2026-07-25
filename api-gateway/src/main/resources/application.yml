@@ -1,0 +1,49 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+  cloud:
+    gateway:
+      routes:
+        - id: policy-service
+          uri: ${POLICY_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/v1/policies/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+                key-resolver: "#{@ipKeyResolver}"
+
+        - id: fnol-intake-service
+          uri: ${FNOL_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/v1/fnol/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                key-resolver: "#{@ipKeyResolver}"
+
+        - id: adjuster-assignment-service
+          uri: ${ADJUSTER_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/v1/adjusters/**
+
+        - id: reserve-settlement-service
+          uri: ${RESERVE_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/api/v1/reserves/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.insurtech.claims: DEBUG

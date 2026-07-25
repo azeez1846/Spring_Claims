@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Claims Console | Guidewire ClaimCenter Alternative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="logo-text">
+        <h1>Enterprise Claims Center</h1>
+        <p>Guidewire ClaimCenter Alternative • Distributed Event-Driven FNOL Engine</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-badge" id="systemStatusBtn" style="cursor: pointer;" title="Click to view Kafka Bus & Redis Cluster Health">
+        <div class="pulse-dot"></div>
+        Kafka Bus & Redis Cluster Active <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem; margin-left: 0.4rem;"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Executive Dashboard Container -->
+  <div class="dashboard-container">
+
+    <!-- KPI Metric Cards Row -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-file-signature"></i></div>
+        <div class="stat-info">
+          <h3>Claims Adjudicated</h3>
+          <div class="stat-value" id="statTotalClaims">0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-vault"></i></div>
+        <div class="stat-info">
+          <h3>Established Reserves</h3>
+          <div class="stat-value" id="statReservesTotal">$0</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon emerald"><i class="fa-solid fa-microchip"></i></div>
+        <div class="stat-info">
+          <h3>Drools Auto-Rules</h3>
+          <div class="stat-value" id="statRuleRate">100%</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa-solid fa-user-gear"></i></div>
+        <div class="stat-info">
+          <h3>Adjuster Capacity</h3>
+          <div class="stat-value">3 Specialist Teams</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Interactive Grid Row 1 -->
+    <div class="main-grid">
+
+      <!-- FNOL Intake Studio Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fa-solid fa-pen-to-square"></i>
+            FNOL Intake Studio (First Notice of Loss)
+          </div>
+        </div>
+
+        <form id="fnolForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Policy Number</label>
+              <input type="text" id="policyNumber" value="POL-AUTO-1001" placeholder="e.g. POL-AUTO-1001" required>
+              <div id="policyCheckResult"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Line of Business (LOB)</label>
+              <select id="lineOfBusiness">
+                <option value="AUTO">AUTO (Personal & Commercial)</option>
+                <option value="PROPERTY">PROPERTY (Residential & Commercial)</option>
+                <option value="GENERAL_LIABILITY">GENERAL_LIABILITY</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Coverage Type</label>
+              <select id="coverageType">
+                <option value="COLLISION">COLLISION</option>
+                <option value="COMPREHENSIVE">COMPREHENSIVE</option>
+                <option value="PROPERTY_DAMAGE">PROPERTY_DAMAGE</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Estimated Loss Amount ($)</label>
+              <input type="number" id="estimatedLossAmount" value="14500.00" step="100" required>
+            </div>
+
+            <div class="form-group">
+              <label>Loss Date & Time</label>
+              <input type="datetime-local" id="lossDateTime">
+            </div>
+
+            <div class="form-group">
+              <label>Loss Location</label>
+              <input type="text" id="lossLocation" value="742 Evergreen Terrace, Springfield" required>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Loss Description / Narrative</label>
+              <textarea id="lossDescription" rows="2" required>Multi-vehicle collision at traffic intersection due to slick road conditions. Vehicle bumper and hood sustained damage.</textarea>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="toggle-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="injuriesReported">
+                  <span>Bodily Injuries Reported (Triggers CAT Drools Severity)</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="policeReportFiled" checked>
+                  <span>Police Incident Report Filed</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-paper-plane"></i> Submit FNOL & Process Adjudication
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Live Event Pipeline & Drools Rules Monitor Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fa-solid fa-network-wired"></i>
+            Distributed Saga Event Pipeline & Drools Adjudicator
+          </div>
+        </div>
+
+        <!-- Pipeline Flow Node Animation -->
+        <div class="pipeline-flow">
+          <div class="pipeline-node active" id="node-policy">
+            <div class="node-title">1. Policy Check</div>
+            <div class="node-status">Redis Cache</div>
+          </div>
+          <div class="pipeline-node" id="node-fnol">
+            <div class="node-title">2. Drools Engine</div>
+            <div class="node-status">Rules Adjudication</div>
+          </div>
+          <div class="pipeline-node" id="node-kafka">
+            <div class="node-title">3. Kafka Bus</div>
+            <div class="node-status">Event Producer</div>
+          </div>
+          <div class="pipeline-node" id="node-adjuster">
+            <div class="node-title">4. Workload Match</div>
+            <div class="node-status">Adjuster Engine</div>
+          </div>
+          <div class="pipeline-node" id="node-reserve">
+            <div class="node-title">5. Saga Reserve</div>
+            <div class="node-status">Financial Ledger</div>
+          </div>
+        </div>
+
+        <!-- Realtime Kafka Event Stream Log -->
+        <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem;">
+          <i class="fa-solid fa-terminal"></i> Live Kafka Topic Stream Log:
+        </div>
+        <div class="event-stream-container" id="eventLogStream">
+          <div style="color: #6b7280; font-style: italic; text-align: center; margin-top: 4rem;">
+            Awaiting FNOL claim submissions... Events will stream live across microservices.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Interactive Grid Row 2 -->
+    <div class="main-grid">
+
+      <!-- Adjusters Workload & Capacity Radar -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fa-solid fa-user-check"></i>
+            Claim Adjusters Workload & Capacity Engine
+          </div>
+        </div>
+        <div class="adjusters-grid" id="adjustersList">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Saga Reserve Ledger & Payout Settlement Portal -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fa-solid fa-scale-balanced"></i>
+            Saga Financial Reserve & Payout Ledger
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Claim #</th>
+                <th>Reserve ID</th>
+                <th>Initial Reserve</th>
+                <th>Current Reserve Balance</th>
+                <th>Paid Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reservesTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- System Health Modal -->
+  <div id="systemStatusModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: #111827; border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; width: 100%; max-width: 520px; color: #fff;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+          <i class="fa-solid fa-server" style="color: #3b82f6;"></i> System & Cluster Health Status
+        </h3>
+        <button type="button" onclick="closeSystemStatusModal()" style="background: transparent; border: none; color: #9ca3af; font-size: 1.2rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div id="systemStatusContent" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <!-- Dynamically populated via JS -->
+      </div>
+
+      <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+        <button type="button" onclick="closeSystemStatusModal()" class="btn-primary" style="padding: 0.5rem 1.25rem;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settlement Payout Modal -->
+  <div id="payoutModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: #111827; border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; width: 100%; max-width: 480px;">
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Execute Financial Payout</h3>
+      <form id="payoutForm">
+        <input type="hidden" id="modalClaimNumber">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Payout Amount ($)</label>
+          <input type="number" id="modalPayoutAmount" value="3500.00" step="50" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label>Payee Name / Vendor</label>
+          <input type="text" id="modalPayeeName" value="Springfield Premier Collision Repair" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Payment Method</label>
+          <select id="modalPaymentMethod">
+            <option value="DIRECT_DEPOSIT">DIRECT_DEPOSIT</option>
+            <option value="WIRE_TRANSFER">WIRE_TRANSFER</option>
+            <option value="CHECK">CHECK</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button type="button" onclick="closePayoutModal()" style="background: rgba(255, 255, 255, 0.1); border: none; color: #fff; padding: 0.75rem 1.25rem; border-radius: 10px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-primary">Execute Payout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

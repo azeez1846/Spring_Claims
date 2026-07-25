@@ -1,0 +1,52 @@
+package rules;
+
+import com.insurtech.claims.fnol.rules.ClaimEvaluationFact;
+import com.insurtech.claims.common.enums.LossSeverity;
+import java.math.BigDecimal;
+
+rule "Catastrophic Loss Rule - Bodily Injury or Ultra High Amount"
+    when
+        $fact : ClaimEvaluationFact( injuriesReported == true || estimatedLossAmount > new BigDecimal("100000.00") )
+    then
+        $fact.setCalculatedSeverity(LossSeverity.CAT);
+        $fact.setPriority("URGENT");
+        $fact.setReserveMultiplier(new BigDecimal("1.25"));
+end
+
+rule "High Loss Rule - Major Amount"
+    when
+        $fact : ClaimEvaluationFact(
+            injuriesReported == false,
+            estimatedLossAmount > new BigDecimal("25000.00"),
+            estimatedLossAmount <= new BigDecimal("100000.00")
+        )
+    then
+        $fact.setCalculatedSeverity(LossSeverity.HIGH);
+        $fact.setPriority("HIGH");
+        $fact.setReserveMultiplier(new BigDecimal("1.15"));
+end
+
+rule "Medium Loss Rule - Moderate Amount"
+    when
+        $fact : ClaimEvaluationFact(
+            injuriesReported == false,
+            estimatedLossAmount > new BigDecimal("5000.00"),
+            estimatedLossAmount <= new BigDecimal("25000.00")
+        )
+    then
+        $fact.setCalculatedSeverity(LossSeverity.MEDIUM);
+        $fact.setPriority("NORMAL");
+        $fact.setReserveMultiplier(new BigDecimal("1.05"));
+end
+
+rule "Low Loss Rule - Fender Bender or Minor Property"
+    when
+        $fact : ClaimEvaluationFact(
+            injuriesReported == false,
+            estimatedLossAmount <= new BigDecimal("5000.00")
+        )
+    then
+        $fact.setCalculatedSeverity(LossSeverity.LOW);
+        $fact.setPriority("LOW");
+        $fact.setReserveMultiplier(new BigDecimal("1.00"));
+end

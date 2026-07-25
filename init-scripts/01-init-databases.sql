@@ -1,0 +1,9 @@
+CREATE DATABASE policy_db;
+CREATE DATABASE fnol_db;
+CREATE DATABASE adjuster_db;
+CREATE DATABASE reserve_db;
+
+GRANT ALL PRIVILEGES ON DATABASE policy_db TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE fnol_db TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE adjuster_db TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE reserve_db TO postgres;

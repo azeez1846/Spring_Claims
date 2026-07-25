@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="03-seed-policies" author="insurtech">
+        <insert tableName="policies">
+            <column name="id" valueNumeric="1"/>
+            <column name="policy_number" value="POL-AUTO-1001"/>
+            <column name="policy_holder_name" value="Jane Doe"/>
+            <column name="policy_holder_email" value="jane.doe@example.com"/>
+            <column name="line_of_business" value="AUTO"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="effective_date" value="2025-01-01 00:00:00"/>
+            <column name="expiration_date" value="2027-01-01 00:00:00"/>
+        </insert>
+        <insert tableName="policies">
+            <column name="id" valueNumeric="2"/>
+            <column name="policy_number" value="POL-PROP-2002"/>
+            <column name="policy_holder_name" value="John Smith"/>
+            <column name="policy_holder_email" value="john.smith@example.com"/>
+            <column name="line_of_business" value="PROPERTY"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="effective_date" value="2025-01-01 00:00:00"/>
+            <column name="expiration_date" value="2027-01-01 00:00:00"/>
+        </insert>
+        <insert tableName="policies">
+            <column name="id" valueNumeric="3"/>
+            <column name="policy_number" value="POL-EXPIRED-3003"/>
+            <column name="policy_holder_name" value="Robert Johnson"/>
+            <column name="policy_holder_email" value="robert.j@example.com"/>
+            <column name="line_of_business" value="AUTO"/>
+            <column name="status" value="EXPIRED"/>
+            <column name="effective_date" value="2020-01-01 00:00:00"/>
+            <column name="expiration_date" value="2021-01-01 00:00:00"/>
+        </insert>
+
+        <insert tableName="policy_coverages">
+            <column name="policy_id" valueNumeric="1"/>
+            <column name="coverage_type" value="COLLISION"/>
+            <column name="coverage_limit" valueNumeric="50000.00"/>
+            <column name="deductible_amount" valueNumeric="500.00"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="policy_coverages">
+            <column name="policy_id" valueNumeric="1"/>
+            <column name="coverage_type" value="COMPREHENSIVE"/>
+            <column name="coverage_limit" valueNumeric="50000.00"/>
+            <column name="deductible_amount" valueNumeric="250.00"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="policy_coverages">
+            <column name="policy_id" valueNumeric="2"/>
+            <column name="coverage_type" value="PROPERTY_DAMAGE"/>
+            <column name="coverage_limit" valueNumeric="250000.00"/>
+            <column name="deductible_amount" valueNumeric="1000.00"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

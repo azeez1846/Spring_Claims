@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="02-seed-adjusters-data" author="insurtech">
+        <insert tableName="adjusters">
+            <column name="adjuster_id" value="ADJ-AUTO-001"/>
+            <column name="name" value="Alice Williams"/>
+            <column name="email" value="alice.williams@claims.com"/>
+            <column name="line_of_business" value="AUTO"/>
+            <column name="max_claim_capacity" valueNumeric="10"/>
+            <column name="current_active_claims" valueNumeric="2"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="adjusters">
+            <column name="adjuster_id" value="ADJ-PROP-002"/>
+            <column name="name" value="Bob Miller"/>
+            <column name="email" value="bob.miller@claims.com"/>
+            <column name="line_of_business" value="PROPERTY"/>
+            <column name="max_claim_capacity" valueNumeric="15"/>
+            <column name="current_active_claims" valueNumeric="5"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+        <insert tableName="adjusters">
+            <column name="adjuster_id" value="ADJ-CAT-003"/>
+            <column name="name" value="Charlie Davis (CAT Specialist)"/>
+            <column name="email" value="charlie.davis@claims.com"/>
+            <column name="line_of_business" value="AUTO"/>
+            <column name="max_claim_capacity" valueNumeric="20"/>
+            <column name="current_active_claims" valueNumeric="1"/>
+            <column name="active" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

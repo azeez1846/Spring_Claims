@@ -8,6 +8,21 @@ spring:
     redis:
       host: ${SPRING_REDIS_HOST:localhost}
       port: ${SPRING_REDIS_PORT:6379}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
+            scope:
+              - openid
+              - profile
+              - email
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
   cloud:
     gateway:
       routes:
@@ -16,6 +31,7 @@ spring:
           predicates:
             - Path=/api/v1/policies/**
           filters:
+            - TokenRelay=
             - name: RequestRateLimiter
               args:
                 redis-rate-limiter.replenishRate: 20
@@ -27,6 +43,7 @@ spring:
           predicates:
             - Path=/api/v1/fnol/**
           filters:
+            - TokenRelay=
             - name: RequestRateLimiter
               args:
                 redis-rate-limiter.replenishRate: 10
@@ -37,13 +54,18 @@ spring:
           uri: ${ADJUSTER_SERVICE_URL:http://localhost:8083}
           predicates:
             - Path=/api/v1/adjusters/**
+          filters:
+            - TokenRelay=
 
         - id: reserve-settlement-service
           uri: ${RESERVE_SERVICE_URL:http://localhost:8084}
           predicates:
             - Path=/api/v1/reserves/**
+          filters:
+            - TokenRelay=
 
 logging:
   level:
     org.springframework.cloud.gateway: INFO
+    org.springframework.security: DEBUG
     com.insurtech.claims: DEBUG

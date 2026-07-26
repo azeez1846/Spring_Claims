@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: adjuster-assignment-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/adjuster_db}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}

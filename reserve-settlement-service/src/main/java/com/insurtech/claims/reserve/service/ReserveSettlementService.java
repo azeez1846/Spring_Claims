@@ -38,6 +38,7 @@ public class ReserveSettlementService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public ClaimReserveEntity initializeReserve(UnderwritingAssignedEvent event) {
         log.info("Initializing reserve ledger for claimNumber={}, initialReserve={}", event.getClaimNumber(), event.getInitialReserve());
 
@@ -72,6 +73,7 @@ public class ReserveSettlementService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public PayoutLedgerEntity processPayout(PayoutRequest request) {
         log.info("Processing payout for claimNumber={}, amount={}", request.getClaimNumber(), request.getPayoutAmount());
 

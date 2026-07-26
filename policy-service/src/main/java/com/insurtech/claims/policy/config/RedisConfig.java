@@ -18,6 +18,7 @@ import java.time.Duration;
 public class RedisConfig {
 
     @Bean
+    @SuppressWarnings("null")
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

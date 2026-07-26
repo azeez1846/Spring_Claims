@@ -22,6 +22,7 @@ public class WebConfig implements WebFluxConfigurer {
     }
 
     @Bean
+    @SuppressWarnings("null")
     public RouterFunction<ServerResponse> indexRouter() {
         return RouterFunctions.route(
                 GET("/"),

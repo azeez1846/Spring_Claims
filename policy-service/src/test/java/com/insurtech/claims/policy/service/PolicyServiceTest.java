@@ -25,7 +25,7 @@ class PolicyServiceTest {
     private PolicyService policyService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         policyRepository = Mockito.mock(PolicyRepository.class);
         policyService = new PolicyService(policyRepository);
     }

@@ -35,6 +35,7 @@ public class AdjusterAssignmentService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public UnderwritingAssignedEvent assignClaimToAdjuster(ClaimSubmittedEvent event) {
         log.info("Assigning adjuster for claimNumber={}, lineOfBusiness={}, severity={}",
                 event.getClaimNumber(), event.getLineOfBusiness(), event.getLossSeverity());

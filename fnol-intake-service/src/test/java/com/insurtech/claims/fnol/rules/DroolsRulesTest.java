@@ -21,7 +21,7 @@ class DroolsRulesTest {
     private KieContainer kieContainer;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         kieFileSystem.write(ResourceFactory.newClassPathResource("rules/fnol-routing-rules.drl"));
